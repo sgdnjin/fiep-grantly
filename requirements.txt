@@ -1,3 +1,7 @@
 geopandas
 pandas
 streamlit
+plotly.express
+collections.defaultdict
+fpdf.FPDF
+plotly.graph_objects
