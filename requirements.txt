@@ -3,3 +3,4 @@ pandas
 streamlit
 plotly
 fpdf
+openpyxl
