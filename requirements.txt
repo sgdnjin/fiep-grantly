@@ -2,6 +2,4 @@ geopandas
 pandas
 streamlit
 plotly
-collections
 fpdf
-plotly
