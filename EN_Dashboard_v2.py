@@ -1,4 +1,4 @@
-# Grantly Dashboard with improvements
+# Grantly Dashboard
 import pandas as pd
 import geopandas as gpd
 import plotly.express as px
@@ -66,6 +66,11 @@ def generate_pdf(row):
 
 # --- Streamlit config ---
 st.set_page_config(page_title="Grantly Dashboard", layout="wide")
+if st.session_state.get("reset_trigger"):
+    st.session_state.clear()  # clear all filters and widgets
+    st.session_state["loan_slider"] = 0  # re-initialize slider manually
+    st.session_state["reset_trigger"] = False
+    st.rerun()
 st.title("Grantly — Government Funding Explorer")
 
 # --- Sidebar filters ---
@@ -74,7 +79,8 @@ with st.sidebar:
     st.markdown("## Filter Funding Programs")
 
     if st.button("\U0001F504 Reset filters"):
-        st.session_state.clear()
+        # st.session_state.clear()
+        st.session_state["reset_trigger"] = True
         st.rerun()
 
     filters = {
@@ -190,8 +196,9 @@ with tab3:
     if not valid_max_amounts.empty:
         max_amount = valid_max_amounts.max()
         loan_amount = st.slider(
-            "Required loan amount", min_value=0, max_value=int(max_amount), step=1000, value=0,
-            format="€%s", label_visibility="visible"
+            "Required loan amount", min_value=0, max_value=int(max_amount), step=1000, 
+            # value=0,
+            format="€%s", label_visibility="visible", key="loan_slider"
         )
         loan_df = loan_df[pd.to_numeric(loan_df["loan_max_amount"], errors="coerce") >= loan_amount]
     else:
